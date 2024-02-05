@@ -5,16 +5,23 @@ import com.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/index")
+    public String index() {
+        return "index";
+    }
 
     @GetMapping("/")
     public String viewHomePage(Model model){
@@ -46,5 +53,17 @@ public class EmployeeController {
     public String deleteById(@PathVariable(value = "id") long id){
         employeeService.deleteById(id);
         return "redirect:/";
+    }
+
+    // Authentication logic
+    @PostMapping("/authenticate")
+    public String authenticate(@RequestParam String username, @RequestParam String password) {
+        // Replace this with your actual authentication logic
+        // Example: Check if the provided username and password are valid
+        if ("john".equals(username) && "password".equals(password)) {
+            return "redirect:/index";
+        } else {
+            return "redirect:/login?error=true";
+        }
     }
 }
